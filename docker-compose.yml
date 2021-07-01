@@ -1,0 +1,24 @@
+version: '3.2'
+services:
+  jenkins:
+    image: jenkins/jenkins:latest
+    user: root
+    privileged: true
+    networks:
+      - jenkinsnet
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - /home/marlon/Projetos:/home/Projetos
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8080:8080"
+      - "5000:5000"
+      - "50000:50000"
+
+networks:
+  jenkinsnet:
+
+volumes:
+  jenkins_data:

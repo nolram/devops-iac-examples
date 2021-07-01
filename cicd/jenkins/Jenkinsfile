@@ -1,0 +1,21 @@
+pipeline {
+
+  agent any
+
+  stages {
+    stage ('Molecule test') {
+        agent {
+            docker {
+                image 'nolram/ansible:latest'
+                args "--entrypoint=''"
+            }
+        }
+        steps {
+            sh '''
+            source virtenv/bin/activate
+            molecule test
+            '''
+        }
+    }
+  }
+}
