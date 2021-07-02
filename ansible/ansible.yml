@@ -1,0 +1,8 @@
+---
+
+- name: Setup Wordpress
+  hosts: vagrant
+
+  roles:
+    - mysql
+    - wordpress

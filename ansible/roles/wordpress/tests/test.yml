@@ -1,5 +1,5 @@
 ---
 - hosts: localhost
-  remote_user: marlon
+  remote_user: root
   roles:
     - wordpress

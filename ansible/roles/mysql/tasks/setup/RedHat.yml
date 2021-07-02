@@ -1,0 +1,12 @@
+---
+- block:
+    - name: Centos - Installing MySQL package
+      yum:
+        name: "{{ mysql_packages }}"
+        state: present
+        update_cache: true
+        enablerepo: "{{ mysql_enablerepo | default(omit, true) }}"
+      register: rh_mysql_install_packages
+      until: rh_mysql_install_packages is succeeded
+    
+  become: true
