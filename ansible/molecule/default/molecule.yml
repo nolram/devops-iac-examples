@@ -5,7 +5,8 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
+    dockerfile: Dockerfile.j2
+    image: centos:7
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     privileged: true
     volumes:

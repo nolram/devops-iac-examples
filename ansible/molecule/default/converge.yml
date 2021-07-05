@@ -5,9 +5,9 @@
     - name: "Include mysql"
       include_role:
         name: "mysql"
-    - name: "Include wordpress"
-      include_role:
-        name: "wordpress"
+    # - name: "Include wordpress"
+    #   include_role:
+    #     name: "wordpress"
 
   post_tasks:
     - name: Make sure we can connect to MySQL via Unix socket.
