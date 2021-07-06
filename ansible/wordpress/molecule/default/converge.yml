@@ -1,0 +1,19 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include mysql"
+      include_role:
+        name: "mysql"
+    # - name: "Include wordpress"
+    #   include_role:
+    #     name: "wordpress"
+
+  post_tasks:
+    - name: Make sure we can connect to MySQL via Unix socket.
+      command: "mysql -u root -proot -e 'show databases;'"
+      changed_when: false
+
+    - name: Make sure we can connect to MySQL via TCP.
+      command: "mysql -u root -proot -h 127.0.0.1 -e 'show databases;'"
+      changed_when: false
