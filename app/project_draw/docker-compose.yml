@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:12
+    restart: on-failure
+    tty: true
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: user
+      POSTGRES_DB: database
+    networks:
+      - database
+  app:
+    build: .
+    ports:
+      - "8010:8020"
+    environment:
+      DATABASE_POSTGRES: "True"
+      DB_PASSWORD: pass
+      DB_USER: user
+      DB_NAME: database
+      DB_HOST: db
+      DB_PORT: 5432
+    depends_on:
+      - db
+    networks:
+      - database
+
+networks:
+  database:

@@ -17,24 +17,8 @@
     <title>Sorteio</title>
     <meta name="theme-color" content="#7952b3" />
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-
     <!-- Custom styles for this template -->
-    <link href="{% static 'app_sorteio/css/index.css' %}" rel="stylesheet" />
+    <link href="{% static 'app_draw/css/index.css' %}" rel="stylesheet" />
   </head>
   <body class="text-center">
     <main class="form-sorteio">
@@ -42,20 +26,18 @@
         <h1 class="h3 mb-3 fw-normal">Sortear</h1>
         {% csrf_token %} {{ form.non_field_errors }}
         <div class="form-floating">
-          {{ form.sorteio_nome.errors }}{{ form.sorteio_nome }}
-          <label for="{{ form.sorteio_nome.id_for_label }}"
-            >Nome do Sorteio</label
-          >
+          {{ form.draw_name.errors }}{{ form.draw_name }}
+          <label for="{{ form.draw_name.id_for_label }}">Nome do Sorteio</label>
         </div>
         <div class="form-floating">
-          {{ form.quantidade.errors }}{{ form.quantidade }}
-          <label for="{{ form.quantidade.id_for_label }}"
+          {{ form.quantity.errors }}{{ form.quantity }}
+          <label for="{{ form.quantity.id_for_label }}"
             >Quantidade de Vencedores</label
           >
         </div>
         <div class="form-floating">
-          {{ form.participantes.errors }} {{ form.participantes }}
-          <label for="{{ form.participantes.id_for_label }}"
+          {{ form.participants.errors }} {{ form.participants }}
+          <label for="{{ form.participants.id_for_label }}"
             >Participantes</label
           >
         </div>
