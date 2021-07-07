@@ -1,0 +1,16 @@
+---
+- name: Creates directory
+  file:
+    path: /opt/docker-app
+    state: directory
+    mode: 0644
+
+# tasks file for project_draw
+- name: Copy docker-compose.yml
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: /opt/docker-app/docker-compose.yml
+    mode: 0644
+  tags:
+    - docker-compose-template
+  notify: docker-compose up

@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  db:
+    image: {{ docker_postgres_image }}
+    restart: on-failure
+    tty: true
+    environment:
+      POSTGRES_PASSWORD: {{ postgres_password }}
+      POSTGRES_USER: {{ postgres_user }}
+      POSTGRES_DB: {{ postgres_database }}
+    networks:
+      - database
+  app:
+    image: {{ docker_app_image }}
+    ports:
+      - "8010:8020"
+    environment:
+      DATABASE_POSTGRES: "True"
+      DB_PASSWORD: {{ postgres_password }}
+      DB_USER: {{ postgres_user }}
+      DB_NAME: {{ postgres_database }}
+      DB_HOST: db
+      DB_PORT: 5432
+    depends_on:
+      - db
+    networks:
+      - database
+
+networks:
+  database:

@@ -1,0 +1,9 @@
+---
+- name: Docker run hello World
+  command: docker run hello-world
+  register: docker_run_status
+
+- name: "docker - test docker run hello world was a success"
+  assert:
+    that:
+      - docker_run_status is succeeded

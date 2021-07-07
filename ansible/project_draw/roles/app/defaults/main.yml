@@ -1,0 +1,8 @@
+---
+# defaults file for project_draw
+
+docker_postgres_image: postgres:12
+postgres_password: pass
+postgres_user: user
+postgres_database: db_app
+docker_app_image: nolram/app_draw:latest

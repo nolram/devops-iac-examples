@@ -1,0 +1,9 @@
+---
+
+- name: Setup Project App
+  hosts: all
+  become: true
+
+  roles:
+    - docker
+    - app

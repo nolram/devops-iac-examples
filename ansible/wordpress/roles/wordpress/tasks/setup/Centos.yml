@@ -1,9 +1,0 @@
-- name: Install LAMP Packages
-  yum: name={{ item }} update_cache=yes state=latest
-  loop: [ 'apache2', 'php', 'php-mysql', 'libapache2-mod-php' ]
-  tags: [ system ]
-
-- name: Install PHP Extensions
-  apt: name={{ item }} update_cache=yes state=latest
-  loop: "{{ php_modules }}"
-  tags: [ system ]

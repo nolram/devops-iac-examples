@@ -1,0 +1,6 @@
+---
+- name: "Test if docker is installed"
+  include_tasks: "test_docker.yml"
+
+- name: "Test if app is running"
+  include_tasks: "test_app.yml"

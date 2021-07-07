@@ -1,0 +1,7 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: "Include test project"
+      include_role:
+        name: "test_project"

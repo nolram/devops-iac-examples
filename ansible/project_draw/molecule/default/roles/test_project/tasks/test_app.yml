@@ -1,0 +1,22 @@
+---
+- name: Check docker-compose.yml file
+  stat:
+    path: /opt/docker-app/docker-compose.yml
+  register: docker_compose_file
+
+- name: Get Service Run
+  uri:
+    url: http://127.0.0.1:8010/
+    method: GET
+  register: app_get
+
+
+- name: "app - check if docker-compose.yml exists"
+  assert:
+    that:
+      - docker_compose_file.stat.exists
+
+- name: "app - test app is running"
+  assert:
+    that:
+      - app_get is succeeded
