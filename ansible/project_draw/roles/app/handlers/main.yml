@@ -1,0 +1,7 @@
+---
+# handlers file for project_draw
+- name: docker-compose up
+  command: /usr/local/bin/docker-compose -f /opt/docker-app/docker-compose.yml up -d
+
+- name: docker-compose stop
+  command: /usr/local/bin/docker-compose -f /opt/docker-app/docker-compose.yml stop
