@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+      "lib": ["ES2020"],
+      "removeComments": true,
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "sourceMap": true,
+      "target": "ES2020",
+      "baseUrl": ".",
+      "experimentalDecorators": true,
+      "outDir": "lib"
+    },
+    "include": ["./src/**/*", "./dbconfig.ts"],
+    "exclude": [
+      "node_modules/**/*",
+      ".serverless/**/*",
+      ".webpack/**/*",
+      "_warmup/**/*",
+      ".vscode/**/*",
+      "webpack.config.js"
+    ]
+  }
