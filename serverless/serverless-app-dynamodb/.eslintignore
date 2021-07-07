@@ -1,0 +1,9 @@
+node_modules
+.serverless
+.vscode
+*.config.js
+.webpack
+webpack.config.js
+**/*.js
+.dynamodb
+serverless.ts
