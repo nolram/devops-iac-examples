@@ -6,8 +6,8 @@ driver:
 platforms:
   - name: instance
     box: fedora/32-cloud-base
-    memory: 1024
-    cpus: 1
+    memory: 2048
+    cpus: 3
     config_options:
       ssh.keep_alive: yes
       ssh.remote_user: "'vagrant'"
