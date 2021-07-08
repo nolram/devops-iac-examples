@@ -2,6 +2,10 @@
 
 Aplicação Lambda de exemplo, escrito em Typescript e Node 14, utiliza o framework [Serverless](https://www.serverless.com/). Realiza a criação de AWS HTTP API Gateway e uma tabela DynamoDB e realiza o deploy de duas funções AWS Lambda, getUser e insertUser.
 
+## Execução
+### Deploy
+[![asciicast](https://asciinema.org/a/424433.svg)](https://asciinema.org/a/424433)
+
 ## Requisitos
 ```
 Node 14
