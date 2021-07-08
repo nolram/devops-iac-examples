@@ -11,27 +11,23 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-
 AWSTemplateFormatVersion: "2010-09-09"
 Description: "Pipeline Serverless"
 
 Parameters:
   RepositoryName:
-    Type:  String
+    Type: String
   FullRepositoryId:
     Type: String
   BranchName:
-    Type:  String
+    Type: String
     Default: "master"
   ServerlessFile:
-    Type:  String
+    Type: String
     Default: "serverless.yml"
   AwsRegionDeploy:
-    Type:  String
-    Default: "us-east-1"
-  Setup:
     Type: String
-    Default: false
+    Default: "us-east-1"
   ConnectionArn:
     Type: String
   EnvName:
@@ -39,31 +35,21 @@ Parameters:
   AwsRegion:
     Type: String
 
-
-Conditions: 
-  BranchMaster: !Equals [ !Ref BranchName, "master" ]
-  BranchDevelop: !Equals [ !Ref BranchName, "develop"]
-  Setup: !Equals [ !Ref Setup, true ]
-
-
 Resources:
-
   TemplateBucket:
-    Type: 'AWS::S3::Bucket'
-    Condition: Setup
+    Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !Join ['-', [!Ref 'RepositoryName', 'artifacts', !Ref EnvName ]]
+      BucketName:
+        !Join ["-", [!Ref "RepositoryName", "artifacts", !Ref EnvName]]
 
   TemplateBucketPolicy:
     Type: AWS::S3::BucketPolicy
-    Condition: Setup
     Properties:
       Bucket: !Ref TemplateBucket
       PolicyDocument:
         Statement:
-          -
-            Action:
-                - s3:*
+          - Action:
+              - s3:*
             Effect: Allow
             Resource:
               - !Sub arn:aws:s3:::${TemplateBucket}
@@ -74,9 +60,9 @@ Resources:
 
   CodePipelineRole:
     Type: AWS::IAM::Role
-    Condition: Setup
     Properties:
-      RoleName: !Join ['-', [!Ref 'RepositoryName', 'CodePipelineRole', !Ref EnvName ]]
+      RoleName:
+        !Join ["-", [!Ref "RepositoryName", "CodePipelineRole", !Ref EnvName]]
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSCodePipelineFullAccess
         - arn:aws:iam::aws:policy/AWSCodeCommitFullAccess
@@ -91,10 +77,10 @@ Resources:
               Service:
                 - codepipeline.amazonaws.com
             Action:
-              - 'sts:AssumeRole'
+              - "sts:AssumeRole"
 
   CodeStarPolicy:
-    Type: 'AWS::IAM::Policy'
+    Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: CodeStarPolicyConnection
       PolicyDocument:
@@ -102,16 +88,16 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - 'codestar-connections:UseConnection'
-            Resource: '*'
+              - "codestar-connections:UseConnection"
+            Resource: "*"
       Roles:
         - !Ref CodePipelineRole
-  
+
   CodeBuildRole:
     Type: AWS::IAM::Role
-    Condition: Setup
     Properties:
-      RoleName: !Join ['-', [!Ref 'RepositoryName', 'CodeBuildRole', !Ref EnvName ]]
+      RoleName:
+        !Join ["-", [!Ref "RepositoryName", "CodeBuildRole", !Ref EnvName]]
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
       Path: /
@@ -123,19 +109,20 @@ Resources:
               Service:
                 - codebuild.amazonaws.com
             Action:
-              - 'sts:AssumeRole'
+              - "sts:AssumeRole"
 
-#----------------------------------------------------------------------#
-# Resource CodePipeline
-#----------------------------------------------------------------------#
+  #----------------------------------------------------------------------#
+  # Resource CodePipeline
+  #----------------------------------------------------------------------#
   Pipeline:
     Type: "AWS::CodePipeline::Pipeline"
     Properties:
-      Name: !Join ['-', [!Ref RepositoryName, !Ref BranchName, !Ref EnvName]]
+      Name: !Join ["-", [!Ref RepositoryName, !Ref BranchName, !Ref EnvName]]
       RoleArn: !GetAtt CodePipelineRole.Arn
       ArtifactStore:
         Type: S3
-        Location: !Join ['-', [!Ref 'RepositoryName', 'artifacts', !Ref EnvName ]]
+        Location:
+          !Join ["-", [!Ref "RepositoryName", "artifacts", !Ref EnvName]]
       Stages:
         - Name: Source
           Actions:
@@ -150,12 +137,12 @@ Resources:
                 FullRepositoryId: !Ref FullRepositoryId
                 BranchName: !Ref BranchName
               OutputArtifacts:
-                - Name: Source 
+                - Name: Source
               RunOrder: 1
 
-#----------------------------------------------------------------------#
-# Regardless of branch type, the CI Stage will always be created.
-#----------------------------------------------------------------------#
+        #----------------------------------------------------------------------#
+        # Regardless of branch type, the CI Stage will always be created.
+        #----------------------------------------------------------------------#
         - Name: CI-CD
           Actions:
             - Name: CICD-Action
@@ -165,41 +152,39 @@ Resources:
                 Version: "1"
                 Provider: CodeBuild
               OutputArtifacts:
-                - Name: !If [BranchMaster, 'CICDActionDev']
+                - Name: "CICDAction"
               InputArtifacts:
-                - Name: Source 
+                - Name: Source
               Configuration:
-                ProjectName: !Join ['-', [ !Ref 'EnvName', !Ref 'RepositoryName', !If [BranchMaster, 'CICDActionDev'] ]]
+                ProjectName:
+                  !Join ["-", [!Ref "EnvName", !Ref "RepositoryName"]]
               RunOrder: 1
 
+  #----------------------------------------------------------------------#
+  # CodeBuild Projects
+  #----------------------------------------------------------------------#
 
-#----------------------------------------------------------------------#
-# CodeBuild Projects
-#----------------------------------------------------------------------#
-
-
-  CICDActionDev: 
-    Condition: BranchDevelop
-    Type: AWS::CodeBuild::Project 
-    Properties: 
-      Name: !Join ['-', [ !Ref 'EnvName', !Ref 'RepositoryName', 'CICDActionDev' ]]
-      Source: 
-        Type: CODEPIPELINE 
-        BuildSpec: '.cicd/buildspec/buildspec_cicd.yml'
-      Environment: 
-        Type: LINUX_CONTAINER 
+  CICDAction:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Join ["-", [!Ref "EnvName", !Ref "RepositoryName", "CICDAction"]]
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: ".cicd/buildspec/buildspec_cicd.yml"
+      Environment:
+        Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/standard:5.0
-        EnvironmentVariables:         
-          - Name: BranchName 
+        EnvironmentVariables:
+          - Name: BranchName
             Value: !Ref BranchName
-          - Name: ServerlessFile 
+          - Name: ServerlessFile
             Value: !Ref ServerlessFile
           - Name: EnvName
             Value: !Ref EnvName
           - Name: AwsRegionDeploy
             Value: !Ref AwsRegionDeploy
-      Artifacts: 
-        Type: CODEPIPELINE 
+      Artifacts:
+        Type: CODEPIPELINE
       ServiceRole: !GetAtt CodeBuildRole.Arn
       TimeoutInMinutes: 10
