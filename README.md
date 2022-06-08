@@ -1,9 +1,9 @@
 # DevOps IAC Examples
 Repositório com exemplos de recursos DevOps, cada pasta possui um README.md detalhando o conteúdo do recurso
 ## Conteúdo
-- [Molecule Test](ansible/project_draw)
-- [Django Exemple App](app/project_draw)
-- [Serverless](serverless/serverless-app-dynamodb)
+- [Molecule Test](ansible/django/project_draw)
+- [Django Exemple App](applications/django/project_draw)
+- [Serverless](applications/serverless/serverless-app-dynamodb)
 
 ## Molecule 
 ### Todos os testes
