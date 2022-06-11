@@ -1,20 +1,26 @@
 locals {
-  account_vars   = read_terragrunt_config(find_in_parent_folders("account.hcl"))
-  region_vars    = read_terragrunt_config(find_in_parent_folders("region.hcl"))
-  environment    = local.account_vars.locals.environment
-  account_id     = local.region_vars.locals.region
-  aws_region     = get_env("AWS_REGION", "us-east-1")
-  bucket         = get_env("BUCKET_STATES")
+    env_vars       = read_terragrunt_config(find_in_parent_folders("env.hcl"))
+    environment    = local.env_vars.locals.environment
+    aws_region     = local.env_vars.locals.region
+    account_id     = get_env("ACCOUNT_ID")
+    bucket         = get_env("BUCKET_STATES")
+    access_key     = get_env("ACCESS_KEY")
+    secret_key     = get_env("SECRET_KEY")
 }
 
-remote_state {
-    backend = "s3"
-    config = {
-        bucket         = "terraform-tfstates-examples"
-        key            = "${path_relative_to_include()}/terraform.tfstate"
-        region         = "us-east-1"
-        encrypt        = true
+generate "backend" {
+  path      = "backend.tf"
+  if_exists = "overwrite_terragrunt"
+  contents = <<EOF
+    terraform {
+    backend "s3" {
+            bucket         = "${local.bucket}"
+            key            = "${path_relative_to_include()}/terraform.tfstate"
+            region         = "${local.aws_region}"
+            encrypt        = true
+        }
     }
+    EOF
 }
 
 generate "provider" {
@@ -24,6 +30,8 @@ generate "provider" {
         provider "aws" {
             allowed_account_ids = ["${local.account_id}"]
             region              = "${local.aws_region}"
+            access_key          = "${local.access_key}"
+            secret_key          = "${local.secret_key}"
         }
     EOF
 }

@@ -282,3 +282,18 @@ dist
 .serverless
 
 # End of https://www.toptal.com/developers/gitignore/api/node,serverless
+
+.*.sw?
+.idea
+terragrunt.iml
+vendor
+.terraform
+.vscode
+*.tfstate
+*.tfstate.backup
+*.out
+.terragrunt-cache
+.bundle
+.ruby-version
+.terraform.lock.hcl
+terragrunt
