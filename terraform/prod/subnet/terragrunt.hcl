@@ -10,7 +10,7 @@ include "env" {
 
 
 terraform {
-  source = "${include.env.locals.source_base_url}?ref=v2.0.2"
+  source = "${include.env.locals.source_base_url}?ref=2.0.2"
 }
 
 
