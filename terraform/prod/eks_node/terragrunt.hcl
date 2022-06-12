@@ -11,3 +11,8 @@ include "env" {
 terraform {
   source = "${include.env.locals.source_base_url}?ref=2.5.0"
 }
+
+inputs = {
+  desired_size      = 3
+  max_size          = 5
+}

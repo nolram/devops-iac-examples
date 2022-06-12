@@ -7,6 +7,7 @@ Repositório com exemplos de recursos DevOps, cada pasta possui um README.md det
 - [Molecule Test](ansible/django/project_draw)
 - [Django Exemple App](applications/django/project_draw)
 - [Serverless](applications/serverless/serverless-app-dynamodb)
+- [Terraform/Terragrunt](terraform)
 
 ## Molecule
 
