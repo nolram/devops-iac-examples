@@ -8,9 +8,9 @@ Esse repositório pode provisionar VPC, Subnet, Tabela DynamoDB, EKS Cluster e E
 
 ## Recursos necessários
 
-- [Terragrunt](https://terragrunt.gruntwork.io/)
-- [Terraform](https://www.terraform.io/)
-- [AWS Cli](https://aws.amazon.com/pt/cli/) Opcional
+- [Terragrunt - 0.37.1](https://terragrunt.gruntwork.io/)
+- [Terraform - 1.2.2](https://www.terraform.io/)
+- [AWS CLI - 2.7.0](https://aws.amazon.com/pt/cli/) Opcional
 
 ## Módulos utilizados
 
