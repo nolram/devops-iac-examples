@@ -1,3 +1,23 @@
+# Project Draw
+
+Uma aplicação simples escrita em Python com o framework Django para realizar sorteios, semelhante ao https://www.random.org/lists/
+
+## Requisitos
+
+```pip
+gunicorn==20.1.0
+Django==4.0.5
+psycopg2==2.9.3
+```
+
+## Run Docker
+
+```bash
+docker-compose up -d --build
+```
+
+## docker-compose
+```
 version: "3.8"
 services:
   db:
@@ -10,7 +30,7 @@ services:
     networks:
       - database
   app:
-    build: .
+    image: public.ecr.aws/h8l7l8v7/project_draw:latest
     ports:
       - "8010:8020"
     environment:
@@ -28,3 +48,5 @@ services:
 
 networks:
   database:
+
+```

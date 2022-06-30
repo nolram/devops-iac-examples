@@ -4,7 +4,6 @@ locals {
     aws_region     = local.env_vars.locals.region
     account_id     = get_env("ACCOUNT_ID")
     bucket         = get_env("BUCKET_STATES")
-    dynamodb_table = get_env("DYNAMODB_LOCK_TABLE")
     access_key     = get_env("ACCESS_KEY")
     secret_key     = get_env("SECRET_KEY")
 }
@@ -36,3 +35,6 @@ generate "provider" {
         }
     EOF
 }
+
+terraform_version_constraint  = ">= 0.15"
+terragrunt_version_constraint = ">= 0.29"

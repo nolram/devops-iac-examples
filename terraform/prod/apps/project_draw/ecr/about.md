@@ -2,8 +2,16 @@
 
 Uma aplicação simples escrita em Python com o framework Django para realizar sorteios, semelhante ao https://www.random.org/lists/
 
+## Repository
+
+[https://github.com/nolram/devops-iac-examples/tree/main/applications/django/project_draw](https://github.com/nolram/devops-iac-examples/tree/main/applications/django/project_draw)
+
+## Usage
+Leia usage para entender as variáveis de ambiente
+
 ## Requisitos
-```
+
+```pip
 gunicorn==20.1.0
 Django==4.0.5
 psycopg2==2.9.3
