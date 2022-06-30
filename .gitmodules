@@ -1,0 +1,6 @@
+[submodule "applications/django/django-workshop"]
+	path = applications/django/django-workshop
+	url = https://github.com/nolram/django-workshop
+[submodule "applications/serverless/serverless-template-nodejs"]
+	path = applications/serverless/serverless-template-nodejs
+	url = https://github.com/nolram/serverless-template-nodejs
