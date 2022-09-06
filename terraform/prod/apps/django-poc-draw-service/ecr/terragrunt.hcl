@@ -13,11 +13,11 @@ terraform {
 }
 
 inputs = {
-  name                   = "project_draw"
+  name                   = "django-poc-draw-service"
   repository_configs     = [
     {
-      name              = "project_draw"
-      description       = "The repository for the project_draw image"
+      name              = "django-poc-draw-service"
+      description       = "The repository for the django-poc-draw-service image"
       about_text        = file("about.md")
       usage_text        = file("usage.md")
       logo_image_blob   = null

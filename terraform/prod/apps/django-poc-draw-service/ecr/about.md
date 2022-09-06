@@ -4,7 +4,7 @@ Uma aplicação simples escrita em Python com o framework Django para realizar s
 
 ## Repository
 
-[https://github.com/nolram/devops-iac-examples/tree/main/applications/django/project_draw](https://github.com/nolram/devops-iac-examples/tree/main/applications/django/project_draw)
+[https://github.com/nolram/django-poc-draw-service](https://github.com/nolram/django-poc-draw-service)
 
 ## Usage
 Leia usage para entender as variáveis de ambiente
