@@ -12,7 +12,8 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "*"
+    - "argocd.k8s.example.com" 
+    - "internal.argo.k8s.example.com"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -21,7 +22,8 @@ metadata:
   namespace: argocd
 spec:
   hosts:
-  - "*"
+  - "argocd.k8s.example.com"
+  - "internal.argo.k8s.example.com"
   gateways:
   - argocd-gateway
   http:
