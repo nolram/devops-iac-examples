@@ -1,0 +1,46 @@
+service: aws-lambda-start-stop-ec2
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  patterns:
+    - '!*'
+    - handler.py
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: us-east-1
+  environment:
+    SLS_AWS_REGION: "${aws:region}"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - 'ec2:Start*'
+            - 'ec2:Stop*'
+            - 'ec2:DescribeInstances'
+          Resource: '*'
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    usePipenv: false
+    layer: true
+
+functions:
+  stopInstance:
+    handler: handler.stop_instance
+    events:
+      # Invoke Lambda function every 2nd minute from Mon-Fri
+      - schedule: cron(30 1 ? * MON-FRI *)
+
+  startInstance:
+    handler: handler.start_instance
+    events:
+      # Invoke Lambda function every 2nd minute from Mon-Fri
+      - schedule: cron(0 12 ? * MON-FRI *)
+
