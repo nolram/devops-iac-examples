@@ -6,17 +6,19 @@
 
 locals {
   # Automatically load subscription variables
-  subscription_vars = read_terragrunt_config(find_in_parent_folders("subscription.hcl"))
+  # subscription_vars       = read_terragrunt_config(find_in_parent_folders("subscription.hcl"))
 
   # Automatically load region-level variables
-  region_vars = read_terragrunt_config(find_in_parent_folders("region.hcl"))
+  region_vars             = read_terragrunt_config(find_in_parent_folders("region.hcl"))
 
   # Automatically load environment-level variables
-  environment_vars = read_terragrunt_config(find_in_parent_folders("env.hcl"))
+  environment_vars        = read_terragrunt_config(find_in_parent_folders("env.hcl"))
   
-  location          = local.region_vars.locals.location
-  environment       = local.environment_vars.locals.environment
-  subscription_id   = local.subscription_vars.locals.subscription_id
+  location                = local.region_vars.locals.location
+  environment             = local.environment_vars.locals.environment
+  # subscription_id         = local.subscription_vars.locals.subscription_id
+
+  storage_account_name    = get_env("AZURE_STORAGE_ACCOUNT_NAME")
 }
 
 # Generate Azure providers
@@ -38,12 +40,12 @@ generate "versions" {
     }
 
     provider "azurerm" {
-        features {
-          resource_group {
-      prevent_deletion_if_contains_resources = true
-    }
+      skip_provider_registration = "true"
+      features {
+        resource_group {
+          prevent_deletion_if_contains_resources = true
         }
-        subscription_id = "${local.subscription_id}"
+      }
     }
 
     provider "azuread" {
@@ -51,18 +53,32 @@ generate "versions" {
 EOF
 }
 
+generate "backend" {
+  path      = "backend.tf"
+  if_exists = "overwrite_terragrunt"
+  contents = <<EOF
+    terraform {
+      backend "azurerm" {
+        resource_group_name  = "tfstate"
+        storage_account_name = "${local.storage_account_name}"
+        container_name       = "tfstate"
+        key                  = "${path_relative_to_include()}/terraform.tfstate"
+      }
+    }
+    EOF
+}
+
 # remote_state {
 #     backend = "azurerm"
 #     config = {
-#         subscription_id = "${local.subscription_id}"
-#         key = "${path_relative_to_include()}/terraform.tfstate"
-#         resource_group_name = "rg-terragrunt-example-001"
-#         storage_account_name = "stterragruntexample001"
-#         container_name = "environment-states"
+#         key                   = "${path_relative_to_include()}/terraform.tfstate"
+#         resource_group_name   = "tfstate"
+#         storage_account_name  = "${local.storage_account_name}"
+#         container_name        = "tfstate"
 #     }
 #     generate = {
-#         path      = "backend.tf"
-#         if_exists = "overwrite_terragrunt"
+#         path                  = "backend.tf"
+#         if_exists             = "overwrite_terragrunt"
 #     }
 # }
 
@@ -75,7 +91,7 @@ EOF
 # Configure root level variables that all resources can inherit. This is especially helpful with multi-account configs
 # where terraform_remote_state data sources are placed directly into the modules.
 inputs = merge(
-  local.subscription_vars.locals,
+  # local.subscription_vars.locals,
   local.region_vars.locals,
   local.environment_vars.locals
 )

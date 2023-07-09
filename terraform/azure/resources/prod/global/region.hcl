@@ -1,3 +1,3 @@
 locals {
-  location = "eastus" # Default location for global resources, like resource groups
+  location = "East US" # Default location for global resources, like resource groups
 }
