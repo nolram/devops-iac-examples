@@ -1,5 +1,5 @@
 locals {
-  env_vars = read_terragrunt_config(find_in_parent_folders("env.hcl"))
+  env_vars = read_terragrunt_config("../../env.hcl")
   environment = local.env_vars.locals.environment
 
   region_vars = read_terragrunt_config(find_in_parent_folders("region.hcl"))
@@ -15,13 +15,13 @@ include "env" {
   expose = true
 }
 
-dependency "resource_group" {
-  config_path = find_in_parent_folders("resource_group")
 
-  mock_outputs = {
-    vnet_resource_group_name = "rg-terragrunt-mock-001" # This is the name of the resource group that the vnet will be created in
-  }
-  mock_outputs_merge_with_state = true
+dependency "label" {
+  config_path = "../../global/label"
+}
+
+dependency "resource_group" {
+  config_path = "../../global/resource_group"
 }
 
 terraform {
@@ -29,14 +29,11 @@ terraform {
 }
 
 inputs = {
-  vnet_name           = "vnet-spoke-${local.environment}-${local.location}-001"
+  vnet_name           = "vnet-${local.environment}-${local.location}"
   resource_group_name = dependency.resource_group.outputs.vnet_resource_group_name
   address_space       = ["10.0.0.0/16"]
-  subnet_prefixes     = ["10.0.1.0/26", "10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24"]
-  subnet_names        = ["AzureBastionSubnet", "Management", "Tools", "Workloads"]
-  location            = local.location
+  vnet_location       = local.location
+  use_for_each        = false
 
-  tags = {
-    environment = local.environment
-  }
+  tags                = dependency.label.outputs.tags
 }
