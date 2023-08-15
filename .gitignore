@@ -298,3 +298,4 @@ vendor
 .terraform.lock.hcl
 terragrunt
 terraform/credentials.sh
+.DS_Store
